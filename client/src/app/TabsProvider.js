@@ -269,6 +269,10 @@ export default class TabsProvider {
       return null;
     }
 
+    if (!file.contents) {
+      file.contents = this.getInitialFileContents(type);
+    }
+
     return {
       file,
       id,

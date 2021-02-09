@@ -8,12 +8,28 @@
  * except in compliance with the MIT License.
  */
 
+import type { ComponentType as Component } from 'react';
+
 export interface TabsProvider {
   getTabNames(): string[];
 
   createTabForFile(file: File): Tab;
   createEmptyTab(type: string): Tab;
 
-  getComponent(tab: Tab): React.Component | Promise<React.Component>;
-  getProvider: (tab: Tab) => Provider
+  getComponent(tab: Tab): Component | Promise<Component>;
+  getProvider: (tab: Tab) => Provider;
+}
+
+export interface Tab {
+  file: File;
+  id: string;
+  name: string;
+  title: string;
+  type: 'bpmn' | 'dmn' | 'cmmn';
+}
+
+export interface File {
+  name: string;
+  contents: string;
+  path: string;
 }

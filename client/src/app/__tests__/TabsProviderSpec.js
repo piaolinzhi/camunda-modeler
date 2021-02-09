@@ -123,7 +123,8 @@ describe('TabsProvider', function() {
       const tabsProvider = new TabsProvider();
       const file = {
         name: 'diagram.bpmn',
-        path: '/a/diagram.bpmn'
+        path: '/a/diagram.bpmn',
+        contents: ''
       };
 
       // when

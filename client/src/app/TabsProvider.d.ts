@@ -20,12 +20,20 @@ export interface TabsProvider {
   getProvider: (tab: Tab) => Provider;
 }
 
+export interface Provider {
+  getHelpMenu(): any[];
+  getNewFileMenu(): any[];
+}
+
 export interface Tab {
   file: File;
   id: string;
   name: string;
   title: string;
   type: 'bpmn' | 'dmn' | 'cmmn';
+  meta?: {
+    [key: string]: any
+  }
 }
 
 export interface File {

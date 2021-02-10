@@ -68,6 +68,9 @@ export default class TabsProvider {
       empty: {
         getComponent() {
           return EmptyTab;
+        },
+        getNewFileButton() {
+          return null;
         }
       },
       bpmn: {
@@ -97,10 +100,81 @@ export default class TabsProvider {
         },
         getNewFileMenu() {
           return [{
-            label: 'BPMN Diagram',
+            label: 'BPMN Diagram (Camunda)',
             accelerator: 'CommandOrControl+T',
             action: 'create-bpmn-diagram'
           }];
+        },
+        getNewFileButton() {
+          return {
+            label: 'Create new BPMN Diagram (Camunda)',
+            action: 'create-bpmn-diagram'
+          };
+        }
+      },
+      'cloud-bpmn': {
+        name: null,
+        encoding: ENCODING_UTF8,
+        exports: {
+          png: EXPORT_PNG,
+          jpeg: EXPORT_JPEG,
+          svg: EXPORT_SVG
+        },
+        extensions: [ 'bpmn', 'xml' ],
+        getComponent(options) {
+          return import('./tabs/bpmn');
+        },
+        getInitialContents(options) {
+          return bpmnDiagram;
+        },
+        getHelpMenu() {
+          return [];
+        },
+        getNewFileMenu() {
+          return [{
+            label: 'BPMN Diagram (Zeebe)',
+            action: 'create-cloud-bpmn-diagram'
+          }];
+        },
+        getNewFileButton() {
+          return {
+            label: 'Create new BPMN Diagram (Zeebe)',
+            action: 'create-cloud-bpmn-diagram'
+          };
+        }
+      },
+      dmn: {
+        name: 'DMN',
+        encoding: ENCODING_UTF8,
+        exports: {
+          png: EXPORT_PNG,
+          jpeg: EXPORT_JPEG,
+          svg: EXPORT_SVG
+        },
+        extensions: [ 'dmn', 'xml' ],
+        getComponent(options) {
+          return import('./tabs/dmn');
+        },
+        getInitialContents() {
+          return dmnDiagram;
+        },
+        getHelpMenu() {
+          return [{
+            label: 'DMN 1.1 Tutorial',
+            action: 'https://camunda.org/dmn/tutorial/'
+          }];
+        },
+        getNewFileMenu() {
+          return [{
+            label: 'DMN Diagram (Camunda)',
+            action: 'create-dmn-diagram'
+          }];
+        },
+        getNewFileButton() {
+          return {
+            label: 'Create new DMN Diagram (Camunda)',
+            action: 'create-dmn-diagram'
+          };
         }
       },
       cmmn: {
@@ -133,34 +207,12 @@ export default class TabsProvider {
             label: 'CMMN Diagram',
             action: 'create-cmmn-diagram'
           }];
-        }
-      },
-      dmn: {
-        name: 'DMN',
-        encoding: ENCODING_UTF8,
-        exports: {
-          png: EXPORT_PNG,
-          jpeg: EXPORT_JPEG,
-          svg: EXPORT_SVG
         },
-        extensions: [ 'dmn', 'xml' ],
-        getComponent(options) {
-          return import('./tabs/dmn');
-        },
-        getInitialContents() {
-          return dmnDiagram;
-        },
-        getHelpMenu() {
-          return [{
-            label: 'DMN 1.1 Tutorial',
-            action: 'https://camunda.org/dmn/tutorial/'
-          }];
-        },
-        getNewFileMenu() {
-          return [{
-            label: 'DMN Diagram',
-            action: 'create-dmn-diagram'
-          }];
+        getNewFileButton() {
+          return {
+            label: 'Create new CMMN Diagram',
+            action: 'create-cmmn-diagram'
+          };
         }
       }
     };
@@ -221,11 +273,9 @@ export default class TabsProvider {
 
     const name = `diagram_${counter}.${type}`;
 
-    const contents = this.getInitialFileContents(type);
-
     return {
       name,
-      contents,
+      contents: '',
       path: null
     };
   }
@@ -269,6 +319,7 @@ export default class TabsProvider {
       return null;
     }
 
+    // fill empty file with initial contents
     if (!file.contents) {
       file.contents = this.getInitialFileContents(type);
     }

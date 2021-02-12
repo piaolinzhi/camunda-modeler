@@ -316,9 +316,11 @@ export default class TabsProvider {
 
     const name = this._getInitialFilename(type, counter);
 
+    const contents = this.getInitialFileContents(type);
+
     return {
       name,
-      contents: '',
+      contents,
       path: null
     };
   }

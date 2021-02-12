@@ -403,12 +403,12 @@ export default class TabsProvider {
 
     // single provider specified for the extension
     if (providersForExtension.length === 1) {
-      return providersForExtension;
+      return providersForExtension[0];
     }
 
     // multiple providers specified for the extension
     if (providersForExtension.length > 1) {
-      const provider = findProviderForFile(this.providersForExtension, file);
+      const provider = findProviderForFile(providersForExtension, file);
 
       // return the matching provider or the last provider as fallback
       return provider || providersForExtension[providersForExtension.length - 1];
@@ -427,7 +427,8 @@ export default class TabsProvider {
 
 
 
-// helper
+// helper ///////////////////
+
 function getTypeFromFileExtension(file) {
   const { name } = file;
 

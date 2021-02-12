@@ -9,6 +9,7 @@
  */
 
 import bpmnDiagram from './tabs/bpmn/diagram.bpmn';
+import cloudBpmnDiagram from './tabs/cloud-bpmn/diagram.bpmn';
 import cmmnDiagram from './tabs/cmmn/diagram.cmmn';
 import dmnDiagram from './tabs/dmn/diagram.dmn';
 
@@ -139,14 +140,10 @@ export default class TabsProvider {
           return false;
         },
         getComponent(options) {
-
-          // TODO @barmac: use Zeebe component
-          return import('./tabs/bpmn');
+          return import('./tabs/cloud-bpmn');
         },
         getInitialContents(options) {
-
-          // TODO @barmac: use Zeebe diagram
-          return bpmnDiagram;
+          return cloudBpmnDiagram;
         },
         getInitialFilename(suffix) {
           return `diagram_${suffix}.bpmn`;

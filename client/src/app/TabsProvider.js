@@ -25,6 +25,10 @@ import {
 import parseDiagramType from './util/parseDiagramType';
 
 import {
+  findUsages as findNamespaceUsages,
+} from './tabs/util/namespace';
+
+import {
   Flags,
   generateId
 } from '../util';
@@ -60,6 +64,9 @@ const EXPORT_SVG = {
   encoding: ENCODING_UTF8,
   extensions: [ 'svg' ]
 };
+
+const NAMESPACE_URL_ZEEBE = 'http://camunda.org/schema/zeebe/1.0';
+
 
 /**
  * A provider that allows us to customize available tabs.
@@ -135,9 +142,21 @@ export default class TabsProvider {
         },
         extensions: [ 'bpmn', 'xml' ],
         canOpen(file) {
+          const {
+            contents
+          } = file;
 
+          if (!contents) {
+            return false;
+          }
+
+          // (1) detect execution platform
           // TODO @barmac: implement
-          return false;
+
+          // (2) detect zeebe namespace
+          const used = findNamespaceUsages(contents, NAMESPACE_URL_ZEEBE);
+
+          return !!used;
         },
         getComponent(options) {
           return import('./tabs/cloud-bpmn');

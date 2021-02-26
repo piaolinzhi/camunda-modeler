@@ -10,6 +10,7 @@
  * except in compliance with the MIT License.
  */
 
+const assert = require('assert');
 const argv = require('mri')(process.argv);
 
 const exec = require('execa').sync;
@@ -25,6 +26,10 @@ const {
   'on-demand': onDemand,
   region
 } = argv;
+
+if (onDemand) {
+  assertCredentialsPresent();
+}
 
 // in case of --nightly, update all package versions to the
 // next minor version with the nightly preid. This will
@@ -170,4 +175,10 @@ function getPublishOptions(publish, nightly, onDemand, region) {
   return [
     `--publish=${ publish ? 'always' : 'never' }`
   ];
+}
+
+function assertCredentialsPresent() {
+  assert(process.env.AWS_ACCESS_KEY_ID, 'AWS_ACCESS_KEY_ID missing');
+  assert(process.env.AWS_SECRET_ACCESS_KEY_ID, 'AWS_SECRET_ACCESS_KEY_ID missing');
+  assert(process.env.AWS_REGION, 'AWS_REGION missing');
 }

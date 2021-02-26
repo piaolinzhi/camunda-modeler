@@ -181,4 +181,5 @@ function assertCredentialsPresent() {
   assert(process.env.AWS_ACCESS_KEY_ID, 'AWS_ACCESS_KEY_ID missing');
   assert(process.env.AWS_SECRET_ACCESS_KEY_ID, 'AWS_SECRET_ACCESS_KEY_ID missing');
   assert(process.env.AWS_REGION && region, 'AWS_REGION missing');
+  console.log('credentials OK');
 }

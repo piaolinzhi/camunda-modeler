@@ -1,8 +1,16 @@
-name: CI
-on: [ push, pull_request ]
+name: BUILD_ON_DEMAND
+on:
+  workflow_dispatch:
+    inputs:
+      buildName:
+        description: 'Name of the build'
+        required: true
+      linkedDependencies:
+        description: 'Dependencies to link from GitHub (format: bpmn-js#develop,dmn-js#9.0.0)'
+        default: ""
 jobs:
-  Build:
-    runs-on: ubuntu-latest
+  "Build on Demand":
+    runs-on: macos-10.15
 
     steps:
     - name: Checkout
@@ -22,5 +30,16 @@ jobs:
           ${{ runner.OS }}-
     - name: Install dependencies
       run: npm ci
-    - name: Build
-      run: npm run all -- --x64 --no-compress
+    - name: Install yarn
+      run:
+        - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.21.1
+        - export PATH="$HOME/.yarn/bin:$PATH"
+    - name: Link dependencies
+      run: npm run link-dependencies
+    - name: Build distro
+      run: >
+        LINKED_DEPENDENCIES="${{ github.event.inputs.linkedDependencies }}"
+        BUILD_NAME="${{ github.event.inputs.buildName }}"
+        AWS_ACCESS_KEY_ID=$AWS_ON_DEMAND_ACCESS_KEY_ID
+        AWS_SECRET_ACCESS_KEY=$AWS_ON_DEMAND_SECRET_ACCESS_KEY
+        npm run build -- --mac --publish --on-demand --region=$AWS_ON_DEMAND_REGION

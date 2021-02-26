@@ -10,7 +10,6 @@
  * except in compliance with the MIT License.
  */
 
-const assert = require('assert');
 const argv = require('mri')(process.argv);
 
 const exec = require('execa').sync;
@@ -23,12 +22,13 @@ const {
   nightly,
   publish,
   config,
-  'on-demand': onDemand,
-  region
+  'on-demand': onDemand
 } = argv;
 
+// region has to be set explicitly to avoid permissions problems
+let region;
 if (onDemand) {
-  assertCredentialsPresent();
+  region = process.env.AWS_REGION;
 }
 
 // in case of --nightly, update all package versions to the
@@ -175,11 +175,4 @@ function getPublishOptions(publish, nightly, onDemand, region) {
   return [
     `--publish=${ publish ? 'always' : 'never' }`
   ];
-}
-
-function assertCredentialsPresent() {
-  assert(process.env.AWS_ACCESS_KEY_ID, 'AWS_ACCESS_KEY_ID missing');
-  assert(process.env.AWS_SECRET_ACCESS_KEY_ID, 'AWS_SECRET_ACCESS_KEY_ID missing');
-  assert(process.env.AWS_REGION && region, 'AWS_REGION missing');
-  console.log('credentials OK');
 }

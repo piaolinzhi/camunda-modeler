@@ -45,4 +45,4 @@ jobs:
       run: >
         AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
         AWS_SECRET_ACCESS_KEY_ID=$AWS_SECRET_ACCESS_KEY_ID
-        npm run build -- --mac --publish --on-demand --region=$AWS_REGION
+        npm run build -- --mac --publish --on-demand

@@ -93,7 +93,8 @@ jobs:
       script: >
         AWS_ACCESS_KEY_ID=$AWS_ON_DEMAND_ACCESS_KEY_ID
         AWS_SECRET_ACCESS_KEY=$AWS_ON_DEMAND_SECRET_ACCESS_KEY
-        npm run build -- --linux --publish --on-demand --region=$AWS_ON_DEMAND_REGION
+        AWS_REGION=$AWS_ON_DEMAND_REGION
+        npm run build -- --linux --publish --on-demand
     - stage: "build on demand"
       name: "Build On Demand - MacOS"
       os: osx
@@ -105,7 +106,8 @@ jobs:
       script: >
         AWS_ACCESS_KEY_ID=$AWS_ON_DEMAND_ACCESS_KEY_ID
         AWS_SECRET_ACCESS_KEY=$AWS_ON_DEMAND_SECRET_ACCESS_KEY
-        npm run build -- --mac --publish --on-demand --region=$AWS_ON_DEMAND_REGION
+        AWS_REGION=$AWS_ON_DEMAND_REGION
+        npm run build -- --mac --publish --on-demand
     - stage: "build on demand"
       name: "Build On Demand - Windows"
       os: windows
@@ -120,7 +122,8 @@ jobs:
       script: >
         AWS_ACCESS_KEY_ID=$AWS_ON_DEMAND_ACCESS_KEY_ID
         AWS_SECRET_ACCESS_KEY=$AWS_ON_DEMAND_SECRET_ACCESS_KEY
-        npm run build -- --win --publish --on-demand --region=$AWS_ON_DEMAND_REGION
+        AWS_REGION=$AWS_ON_DEMAND_REGION
+        npm run build -- --win --publish --on-demand
 stages:
   - name: test
     if: type != api OR env(SKIP_TESTS) != "true"

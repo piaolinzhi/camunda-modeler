@@ -45,6 +45,12 @@ module.exports = async function(context) {
     APPLE_DEVELOPER_ID_PASSWORD: appleIdPassword
   } = process.env;
 
+  // TODO @barmac: remove once env variables are set
+  if (!appleId || !appleIdPassword && process.env.ON_DEMAND) {
+    console.log('  • skipped notarization for build-on-demand on GitHub Actions');
+    return;
+  }
+
   const appPath = `${appOutDir}/${appName}.app`;
 
   console.log(`  • notarizing app from path: ${appPath}`);

@@ -9,7 +9,7 @@ on:
         description: 'Dependencies to link from GitHub (format: bpmn-js#develop,dmn-js#9.0.0)'
         default: ""
 jobs:
-  "Build on Demand":
+  build:
     runs-on: macos-10.15
 
     steps:

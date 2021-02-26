@@ -13,8 +13,6 @@ jobs:
     runs-on: macos-10.15
     env:
       ON_DEMAND: true
-      LINKED_DEPENDENCIES: '${{ github.event.inputs.linkedDependencies }}'
-      BUILD_NAME: '${{ github.event.inputs.buildName }}'
 
     steps:
     - name: Checkout
@@ -39,9 +37,13 @@ jobs:
         curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.21.1
         export PATH="$HOME/.yarn/bin:$PATH"
     - name: Link dependencies
+      env:
+        LINKED_DEPENDENCIES: '${{ github.event.inputs.linkedDependencies }}'
       run: npm run link-dependencies
     - name: Build distro
-      run: >
-        AWS_ACCESS_KEY_ID=$AWS_ON_DEMAND_ACCESS_KEY_ID
-        AWS_SECRET_ACCESS_KEY=$AWS_ON_DEMAND_SECRET_ACCESS_KEY
-        npm run build -- --mac --publish --on-demand --region=$AWS_ON_DEMAND_REGION
+      env:
+        BUILD_NAME: '${{ github.event.inputs.buildName }}'
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ON_DEMAND_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY_ID: ${{ secrets.AWS_ON_DEMAND_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.AWS_ON_DEMAND_REGION }}
+      run: npm run build -- --mac --publish --on-demand --region=$AWS_REGION

@@ -7,10 +7,14 @@ on:
         required: true
       linkedDependencies:
         description: 'Dependencies to link from GitHub (format: bpmn-js#develop,dmn-js#9.0.0)'
-        default: ""
+        default: ''
 jobs:
   build:
     runs-on: macos-10.15
+    env:
+      ON_DEMAND: true
+      LINKED_DEPENDENCIES: '${{ github.event.inputs.linkedDependencies }}'
+      BUILD_NAME: '${{ github.event.inputs.buildName }}'
 
     steps:
     - name: Checkout
@@ -38,8 +42,6 @@ jobs:
       run: npm run link-dependencies
     - name: Build distro
       run: >
-        LINKED_DEPENDENCIES="${{ github.event.inputs.linkedDependencies }}"
-        BUILD_NAME="${{ github.event.inputs.buildName }}"
         AWS_ACCESS_KEY_ID=$AWS_ON_DEMAND_ACCESS_KEY_ID
         AWS_SECRET_ACCESS_KEY=$AWS_ON_DEMAND_SECRET_ACCESS_KEY
         npm run build -- --mac --publish --on-demand --region=$AWS_ON_DEMAND_REGION

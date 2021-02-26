@@ -42,4 +42,7 @@ jobs:
         AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ON_DEMAND_ACCESS_KEY_ID }}'
         AWS_SECRET_ACCESS_KEY_ID: '${{ secrets.AWS_ON_DEMAND_SECRET_ACCESS_KEY }}'
         AWS_REGION: '${{ secrets.AWS_ON_DEMAND_REGION }}'
-      run: npm run build -- --mac --publish --on-demand --region=$AWS_REGION
+      run: >
+        AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+        AWS_SECRET_ACCESS_KEY_ID=$AWS_SECRET_ACCESS_KEY_ID
+        npm run build -- --mac --publish --on-demand --region=$AWS_REGION

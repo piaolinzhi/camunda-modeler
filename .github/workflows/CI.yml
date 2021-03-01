@@ -34,12 +34,12 @@ jobs:
       run: npm ci
     - name: Link dependencies
       env:
-        LINKED_DEPENDENCIES: '${{ github.event.inputs.linkedDependencies }}'
+        LINKED_DEPENDENCIES: "${{ github.event.inputs.linkedDependencies }}"
       run: npm run link-dependencies
     - name: Build distro
       env:
-        BUILD_NAME: '${{ github.event.inputs.buildName }}'
-        AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ON_DEMAND_ACCESS_KEY_ID }}'
-        AWS_SECRET_ACCESS_KEY_ID: '${{ secrets.AWS_ON_DEMAND_SECRET_ACCESS_KEY }}'
-        AWS_REGION: '${{ secrets.AWS_ON_DEMAND_REGION }}'
+        BUILD_NAME: "${{ github.event.inputs.buildName }}"
+        AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ON_DEMAND_ACCESS_KEY_ID }}"
+        AWS_SECRET_ACCESS_KEY_ID: "${{ secrets.AWS_ON_DEMAND_SECRET_ACCESS_KEY }}"
+        AWS_REGION: "${{ secrets.AWS_ON_DEMAND_REGION }}"
       run: npm run build -- --mac --publish --on-demand
